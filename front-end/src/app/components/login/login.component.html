@@ -1,0 +1,64 @@
+<div class="main-panel login-panel" [hidden]="!loadView">
+  <div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-2 mr-4"></div>
+        <div class="col-md-4">
+          <div class="card card-profile">
+            <div class="card-avatar">
+              <a href="#pablo">
+                <img class="img" src="../assets/img/new_logo.png" />
+              </a>
+            </div>
+            <div class="card-body">
+              <form [formGroup]='loginForm' *ngIf="!showVerify">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group bmd-form-group">
+                      <label class="bmd-label-static mb-2" [class.text-danger] = "email.touched && email.invalid">Email</label>
+                      <input type="email" class="form-control" formControlName="email" >
+                      <div *ngIf="email.touched && email.invalid">
+                        <small class="text-danger" *ngIf = "email.errors?.required">  
+                          Please Enter Email
+                        </small>
+                        <small class="text-danger" *ngIf = "email.errors?.email">  
+                          Please Enter Valid Email
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label class="bmd-label-static" [class.text-danger]="password.touched && password.invalid">Password</label>
+                      <input type="password" class="form-control" formControlName="password" >
+                      <small class='text-danger' *ngIf="password.touched && password.invalid">Please Enter Password</small>
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" [disabled]="!loginForm.valid || submitted" class="btn btn-primary btn-round pull-right" (click) = "login()">Step 2</button>
+                <div class="clearfix"></div>
+              </form>
+
+              <form [formGroup]='verificationForm'  *ngIf="showVerify">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label class="bmd-label-static">Liberties College just sent a text message with a verification code to {{showMobile}}.</label>
+                      <input type="text" class="form-control" formControlName="verificationCode">
+                      <small class='text-info'>Please Enter Your Liberties Admission Login Code And Login.</small>
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" [disabled]="!verificationForm.valid || submitted" class="btn btn-primary btn-round pull-right" (click) = "verify()">Login</button>
+                <div class="clearfix"></div>
+              </form>
+            </div>
+          </div>
+          Step {{step}} Of 2
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="sidebar" data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg" [hidden]="!isAuthenticate">
+  <!--
+    Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
+
+    Tip 2: you can also add an image using data-image tag
+-->
+  <div class="logo">
+    <a routerLink='/' class="simple-text logo-normal">
+      Interview System
+    </a>
+  </div>
+  <app-sidebar></app-sidebar>
+</div>
+<div class="main-panel" [hidden]="!isAuthenticate">
+  <app-header></app-header>
+  <div class="content">
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
+  	</div>   
+  </div>
+</div>

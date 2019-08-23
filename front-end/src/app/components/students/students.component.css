@@ -1,0 +1,8 @@
+.modal-dialog { max-width: 1000px; }
+.btn-secondary { background-color: #f8f8f8; color: #111; }
+.modal-header i { color: #3c4858 }
+.modal-footer { display: block; }
+.modal-footer button { float: right; margin-right: 3px; }
+.modal-footer.pull-left { float: left; }
+.animationload { position: inherit; }
+.modal-dialog textarea { width: 100%; min-height: 200px;}

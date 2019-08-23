@@ -1,0 +1,281 @@
+<div class="content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+            <h4>
+            		<span>{{heading}}</span>
+                <span class="float-right h5">
+          				<i class="material-icons" (click)="changeViewMode('list', 'Template Listing')" [ngClass]="{'active': viewMode=='list'}">list_alt</i>
+                  <i class="material-icons" (click)="changeViewMode('new', 'Add New Template')"  [ngClass]="{'text-primary': viewMode=='new'}">note_add</i>
+            		</span>
+            	</h4>
+            	<div class="card-body " *ngIf="viewMode == 'list'">
+                <div class="clearfix"></div>
+                <span>
+                	<div class="table-responsive" *ngIf="templates?.length; then templateBlock; else noTemplateBlock;"></div>
+	                <ng-template #templateBlock>
+	                  <table class="table" id="templates-table" [mfData]="templates" #mf="mfDataTable" [mfRowsOnPage]="5">
+                      <thead class=" text-primary">
+                        <tr>
+                          <td colspan="5" class="w-100">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15, templates.length]"></mfBootstrapPaginator>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th>ID</th>
+                          <th><mfDefaultSorter by="name">Name</mfDefaultSorter></th>
+                          <th><mfDefaultSorter by="subject">Subject</mfDefaultSorter></th>
+                          <th>Body</th>
+                          <th class="td-actions text-right">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let template of mf.data; index as i">
+                          <td>{{i+1}}</td>
+                          <td>{{template.name}}</td>
+                          <td>{{template.subject}}</td>
+                          <td [innerHTML]="template.body"></td>
+                          <td class="td-actions text-right">
+                            <button type="button" rel="tooltip" title="Edit Template ({{template.name}})" class="btn btn-primary btn-link btn-sm">
+                              <i class="material-icons" (click)="setCurrentTemplate(template, 'edit')" data-toggle="modal" data-target="#updateModal">edit</i>
+                              <i class="material-icons text-primary" (click)="setCurrentTemplate(template, 'delete')" data-toggle="modal" data-target="#detailModal">delete_forever</i>
+                              <i class="material-icons text-primary" (click)="setCurrentTemplate(template, 'preview')" data-toggle="modal" data-target="#detailModal">remove_red_eye</i>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <!-- Model For Custom Email -->
+                      <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header btn-secondary">
+                              <i class="material-icons">email</i>
+                              <h5 class="modal-title" id="exampleModalLabel">&nbsp; Update Teplate: {{currentTemplateName}} </h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="d-inline-block">
+                              <h5>Type</h5>
+                            </div>
+                            <div class="d-inline-block ml-5 w-75">
+                              <div class="form-check">
+                                <label class="form-check-label mr-5">
+                                  Email
+                                  <input class="form-check-input" type="radio" [(ngModel)]="currentTemplateType" [value]="1" (change)="changeType(1)" >
+                                  <span class="form-check-sign" >
+                                    <span class="check"></span>
+                                  </span>
+                                </label>
+                                <label class="form-check-label mr-5">
+                                  SMS
+                                  <input class="form-check-input" type="radio" [(ngModel)]="currentTemplateType" [value]="2"  (change)="changeType(2)" >
+                                  <span class="form-check-sign">
+                                    <span class="check"></span>
+                                  </span>
+                                </label>
+                                <label class="form-check-label mr-5">
+                                  Both
+                                  <input class="form-check-input" type="radio" [(ngModel)]="currentTemplateType" [value]="3"  (change)="changeType(3)" >
+                                  <span class="form-check-sign">
+                                    <span class="check"></span>
+                                  </span>
+                                </label>
+                              </div>
+                            </div>
+                            <div class="clearfix"></div>
+                              <div class="clearfix"></div>
+                              <div class="d-inline-block">
+                                <h5>Name</h5>
+                              </div>
+                              <div class="d-inline-block ml-5 w-75">
+                                <input type="text" class="form-control" [(ngModel)]="currentTemplateName">
+                              </div>
+                              <div class="text-danger h5" *ngIf="error && currentTemplateName.length == 0">
+                                <strong><i class="material-icons">error_outline</i></strong>
+                                <span class="mt-4">Please Enter Template Name.</span>
+                              </div>
+                              <div class="clearfix"></div>
+                              <div class="d-inline-block">
+                                <h5>Subject</h5>
+                              </div>
+                              <div class="d-inline-block ml-5 w-75">
+                                <input type="text" class="form-control" [(ngModel)]="currentTemplateSubject">
+                              </div>
+                              <div class="text-danger h5" *ngIf="error && currentTemplateSubject.length == 0">
+                                <strong><i class="material-icons">error_outline</i></strong>
+                                <span class="mt-4">Please Enter Template subject.</span>
+                              </div>
+                              <h5>Template Body</h5>
+                              <ck-editor name="editor1" [(ngModel)]="currentTemplateBody" *ngIf="currentTemplateType != 2"></ck-editor>
+                              <textarea [(ngModel)]="currentTemplateBody" maxlength="160" width="100%" *ngIf="currentTemplateType == 2"></textarea>
+                              <div class="text-danger h5" *ngIf="error && currentTemplateBody.length == 0">
+                                <strong><i class="material-icons">error_outline</i></strong>
+                                <span class="mt-4">Please Enter Template Body.</span>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <span class="pull-left text-primary">
+                                *Do Not Change {{StudentName}} As It Is Getting Used For Dynamic Student Name. <br>
+                                *Do Not Change {{CourseName}}  As It Is Getting Used For Dynamic Course Name.
+                                <br/>
+                                *Do Not Change {{InterviewTime}}  As It Is Getting Used For Dynamic Interview Time.
+                              </span>
+                              <button type="button" class="btn btn-primary" (click)="saveTemplate()">Update</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    <!-- Delet Modal Start -->
+                      <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header " [ngClass]="{'btn-danger': action == 'delete', 'btn-success': action == 'preview'}">
+                              <h5 class="modal-title" id="exampleModalLabel">Are You Sure You Want To Delete This Template?</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="modal-body">
+                                <div class="d-inline-block">
+                                <h5>Type</h5>
+                              </div>
+                              <div class="d-inline-block ml-5 w-75">
+                                <div class="form-check">
+                                  <label class="form-check-label mr-5" *ngIf="currentTemplateType == 1">Email</label>
+                                  <label class="form-check-label mr-5" *ngIf="currentTemplateType == 2">SMS</label>
+                                  <label class="form-check-label mr-5" *ngIf="currentTemplateType == 3">Email, SMS</label>
+                                </div>
+                              </div>
+                              <hr>
+                              <div class="clearfix"></div>
+                                <div class="clearfix"></div>
+                                <div class="d-inline-block">
+                                  <h5>Name</h5>
+                                </div>
+                                <div class="d-inline-block ml-5 w-75">
+                                  <label class="form-check-label mr-5">{{currentTemplateName}}</label>
+                                </div>
+                                <div class="clearfix"></div>
+                                <hr>
+                                <div class="d-inline-block">
+                                  <h5>Subject</h5>
+                                </div>
+                                <div class="d-inline-block ml-5 w-75">
+                                  <label class="form-check-label mr-5">{{currentTemplateSubject}}</label>
+                                </div>
+                                <hr>
+                                <h5>Template Body</h5>
+                                <div class="d-inline-block ml-5 w-75">
+                                  <label class="form-check-label mr-5" [innerHtml]="currentTemplateBody"></label>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <ul>
+                                <li class="text-danger" *ngIf="action == 'delete'">*Once You Delete Template, You Will Not Have Access To That Anymore.</li>
+                              </ul>
+                              <span class="float-right">
+                                <button type="button" class="btn btn-danger" (click)="deleteTemplate()" data-dismiss="modal" *ngIf="action == 'delete'">Delete</button>
+                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#updateModal" *ngIf="action == 'preview'" data-dismiss="modal">Edit</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <!-- Delete Modal End -->
+
+	                </ng-template>
+	                <ng-template #noTemplateBlock>
+	                  <span class="text-warning h5">
+                      <strong><i class="material-icons">warning</i></strong>
+                      No Template Are Available.
+                    </span>
+	                </ng-template>
+	              </span>
+              </div>
+
+              <div class="card-body mx-auto"  *ngIf="viewMode == 'new'">
+                <div class="clearfix"></div>
+                <div class="d-inline-block">
+              		<h5>Type</h5>
+              	</div>
+              	<div class="d-inline-block ml-5 w-75">
+	                <div class="form-check">
+	                  <label class="form-check-label mr-5">
+	                		Email
+	                    <input class="form-check-input" type="radio" [(ngModel)]="templateType" [value]="1">
+	                    <span class="form-check-sign">
+	                      <span class="check"></span>
+	                    </span>
+	                  </label>
+	                  <label class="form-check-label mr-5">
+	                  	SMS
+	                    <input class="form-check-input" type="radio" [(ngModel)]="templateType" [value]="2">
+	                    <span class="form-check-sign">
+	                      <span class="check"></span>
+	                    </span>
+	                  </label>
+	                  <label class="form-check-label mr-5">
+	                  	Both
+	                    <input class="form-check-input" type="radio" [(ngModel)]="templateType" [value]="3">
+	                    <span class="form-check-sign">
+	                      <span class="check"></span>
+	                    </span>
+	                  </label>
+	                </div>
+	              </div>
+                <div class="clearfix"></div>
+                <div class="d-inline-block">
+                  <h5>Name {{templateType}}</h5>
+                </div>
+                <div class="d-inline-block ml-5 w-75">
+                  <input type="text" class="form-control" [(ngModel)]="name">
+                </div>
+                <div class="text-danger h5" *ngIf="error && name.length == 0">
+                  <strong><i class="material-icons">error_outline</i></strong>
+                  <span class="mt-4">Please Enter Template Name.</span>
+                </div>
+								<div class="clearfix"></div>
+              	<div class="d-inline-block">
+              		<h5>Subject</h5>
+              	</div>
+              	<div class="d-inline-block ml-5 w-75">
+                	<input type="text" class="form-control" [(ngModel)]="subject">
+                </div>
+              	<div class="text-danger h5" *ngIf="error && subject.length == 0">
+								  <strong><i class="material-icons">error_outline</i></strong>
+								  <span class="mt-4">Please Enter Template Subject.</span>
+								</div>
+                <h5 class="mt-4">Body</h5>
+                <ck-editor name="editor" [(ngModel)]="body" *ngIf="templateType != 2"></ck-editor>
+                <textarea [(ngModel)]="body" min-height="200px" maxlength="160" class="w-100 h-25" *ngIf="templateType == 2"></textarea>
+                <div class="float-right">
+                  <button class="btn btn-secondary" (click)="resetTemplate()"> Reset </button>
+                  <button class="btn btn-success" (click)="saveTemplate()"> Save </button>
+                </div>
+                <div class="text-danger h5" *ngIf="error && body.length == 0">
+								  <strong><i class="material-icons">error_outline</i></strong>
+								  <span class="mt-4">Please Enter Template Body.</span>
+								</div>
+              	<ul class="text-primary">
+              		<li>*Do Not Change {{StudentName}} As It Is Getting Used For Dynamic Student Name.</li>
+              		<li>*Do Not Change {{CourseName}}  As It Is Getting Used For Dynamic Course Name.</li>
+              		<li>*Do Not Change {{InterviewTime}}  As It Is Getting Used For Dynamic Interview Time.</li>
+              	</ul>
+              </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

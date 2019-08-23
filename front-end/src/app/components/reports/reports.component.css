@@ -1,0 +1,57 @@
+.modal-dialog { max-width: 1000px; }
+.btn-secondary { background-color: #f8f8f8; color: #111; }
+.modal-header i { color: #3c4858;}
+.modal-footer { display: block; }
+.modal-footer button { float: right; margin-right: 3px; }
+.modal-footer.pull-left { float: left; }
+.animationload { position: inherit; }
+.modal-dialog textarea { width: 100%; min-height: 200px;}
+.modal-body .form-check .form-check-input:checked + .form-check-sign .check { background: #4caf50 !important; }
+.material-icons { cursor: pointer!important; }
+.tooltip_custom .material-icons { font-size: 18px; margin-top: -20px!important;}
+
+ul {
+	list-style: none;
+}
+
+.tooltip_custom {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip_custom .tooltip_customtext {
+  visibility: hidden;
+  min-width: 200px;
+  background-color: #ffffff;
+  position: absolute;
+  z-index: 9999;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  border-radius: 4px;
+  border: 1px solid;
+  padding: 20px;
+  box-shadow: 0px 0px 10px 0px;
+}
+
+.tooltip_customtext .text-right {
+	right: 0!important;
+}
+
+.tooltip_custom:hover .tooltip_customtext {
+  visibility: visible;
+  opacity: 1;
+}
+
+.templateModal .modal-dialog,
+.templateModal .modal-content {
+    height: 90%;
+}
+
+.templateModal .modal-body {
+    overflow-y: scroll;
+}
+
+.modifiedCourses .tooltip_customtext { min-width: 350px; }

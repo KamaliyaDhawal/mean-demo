@@ -1,0 +1,164 @@
+<div class="fab">
+	<a (click)="downloadData()">
+    <i class="material-icons">cloud_download</i>
+  </a>
+	<a (click)="printData()">
+    <i class="material-icons">print</i>
+  </a>
+  <a (click)="location.back()">
+    <i class="material-icons">keyboard_backspace</i>
+  </a>
+</div>
+
+<div class="pdf-data">
+	<div class="pdf-page" *ngFor="let student of students;  let i = index">
+		<div class="card pdf-{{i}}">
+		  <div class="card-body">
+				<div class="table-responsive">
+				  <div class="deatail-table">
+				  	<div>
+					    <span class="text-capitalize" style="font-size: 20px; margin-bottom: 20px;">
+					    	<b>Name: {{student.fullname}}</b>
+				    		<b style="float: right;">Course Name: {{student.courseName}}</b>
+					    </span>
+				  	</div>
+				    <table class="table" border="1" style="margin-top: 25px; width: 100%;">
+				      <tbody>
+				      	<tr>
+					      	<th style="border-top: 1px solid black;">Full Name</th>
+					      	<td *ngIf="!student.fullname">N/A</td>
+					      	<td *ngIf="student.fullname">{{student.fullname}}</td>
+					    </tr>
+					    <tr>
+					      	<th>Mobile</th>
+					      	<td *ngIf="!student.mobile">N/A</td>
+					      	<td *ngIf="student.mobile">{{student.mobile}}</td>
+					    </tr>
+					    <tr>
+					      	<th>Birth Date</th>
+					      	<td *ngIf="!student.birthdate">N/A</td>
+					      	<td *ngIf="student.birthdate">{{student.birthdate | date}}</td>
+					    </tr>
+					   	<tr>
+					      	<th>Home Address</th>
+					      	<td *ngIf="!student.home_address">N/A</td>
+					      	<td *ngIf="student.home_address">{{student.home_address}}</td>
+					    </tr>
+					    <tr>
+					      	<th>Postcode</th>
+					      	<td *ngIf="!student.postcode">N/A</td>
+					      	<td *ngIf="student.postcode">{{student.postcode}}</td>
+					    </tr>
+					    <tr>
+					      	<th>Student Current Status</th>
+					      	<td *ngIf="!student.student_status">N/A</td>
+					      	<td  *ngIf="student.student_status && student.student_status==1">Attending school</td>
+					      	<td  *ngIf="student.student_status && student.student_status==2">Left School</td>
+					      	<td  *ngIf="student.student_status && student.student_status==3">Training / SOLAS</td>
+					      	<td  *ngIf="student.student_status && student.student_status==4">Further Education</td>
+					      	<td  *ngIf="student.student_status && student.student_status==5">Third Level</td>
+					      	<td  *ngIf="student.student_status && student.student_status==6">Working</td>
+					    </tr>
+					    <tr>
+					      	<th>Highest Award</th>
+					      	<td *ngIf="!student.highest_award">N/A</td>
+					      	<td  *ngIf="student.highest_award && student.highest_award==1">Junior Certificate</td>
+					      	<td  *ngIf="student.highest_award && student.highest_award==2">Leaving Certificate</td>
+					      	<td  *ngIf="student.highest_award && student.highest_award==3">Level 5 QQI</td>
+					      	<td  *ngIf="student.highest_award && student.highest_award==4">Level 6 QQI</td>
+					      	<td  *ngIf="student.highest_award && student.highest_award==5">Degree or above</td>
+					    </tr>
+					    <tr>
+					      	<th>School Name</th>
+					      	<td *ngIf="!student.school_name">N/A</td>
+					      	<td  *ngIf="student.school_name">{{student.school_name}}</td>
+					    </tr>
+					    <tr>
+					      	<th>School Number</th>
+					      	<td *ngIf="!student.school_number">N/A</td>
+					      	<td  *ngIf="student.school_number">{{student.school_number}}</td>
+					    </tr>
+					    <tr>
+					      	<th>School Address</th>
+					      	<td *ngIf="!student.school_address">N/A</td>
+					      	<td  *ngIf="student.school_address">{{student.school_address}}</td>
+					    </tr>
+					    <tr>
+					      	<th>School Leaving Year</th>
+					      	<td *ngIf="!student.school_leaving_year">N/A</td>
+					      	<td  *ngIf="student.school_leaving_year">{{student.school_leaving_year}}</td>
+					    </tr>
+					    <tr>
+					      	<th>Mode Status</th>
+					      	<td *ngIf="!student.mode_status">N/A</td>
+					      	<td  *ngIf="student.mode_status && student.mode_status==1">Traditional</td>
+					      	<td  *ngIf="student.mode_status && student.mode_status==2">LCVP</td>
+					      	<td  *ngIf="student.mode_status && student.mode_status==3">LCA</td>
+					      	<td  *ngIf="student.mode_status && student.mode_status==4">Other</td>
+					      </tr>
+					      <tr>
+					      	<th>Mode Information</th>
+					      	<td *ngIf="!student.mode_info">N/A</td>
+					      	<td  *ngIf="student.mode_info">{{student.mode_info}}</td>
+					      </tr>
+					      <tr>
+					      	<th>Other Examination</th>
+					      	<td *ngIf="!student.other_examination">N/A</td>
+					      	<td  *ngIf="student.other_examination">{{student.other_examination}}</td>
+					      </tr>
+					      <tr>
+					      	<th>Other Certificate</th>
+					      	<td *ngIf="!student.other_certificate">N/A</td>
+					      	<td  *ngIf="student.other_certificate">{{student.other_certificate}}</td>
+					      </tr>
+					      <tr>
+					      	<th>Work Experience</th>
+					      	<td *ngIf="!student.work_experience">N/A</td>
+					      	<td  *ngIf="student.work_experience">{{student.work_experience}}</td>
+					      </tr>
+					      <tr>
+					      	<th>Disability Condition</th>
+					      	<td *ngIf="!student.disability_condition">N/A</td>
+					      	<td  *ngIf="student.disability_condition && student.disability_condition==1">Walking Difficulty</td>
+					      	<td  *ngIf="student.disability_condition && student.disability_condition==2">Wheelchair user</td>
+					      	<td  *ngIf="student.disability_condition && student.disability_condition==3">Impaired hearing</td>
+					      	<td  *ngIf="student.disability_condition && student.disability_condition==4">Impaired vision</td>
+					      	<td  *ngIf="student.disability_condition && student.disability_condition==5">Impaired speech</td>
+					      	<td  *ngIf="student.disability_condition && student.disability_condition==6">Other</td>
+					      </tr>
+					      <tr>
+					      	<th>Disability Support</th>
+					      	<td *ngIf="!student.disability_support">N/A</td>
+					      	<td  *ngIf="student.disability_support && student.disability_support==1">Laptop</td>
+					      	<td  *ngIf="student.disability_support && student.disability_support==2">Reader / Scribe</td>
+					      	<td  *ngIf="student.disability_support && student.disability_support==3">Other</td>
+					      </tr>
+					      <tr>
+					      	<th>Round Name</th>
+					      	<td *ngIf="!student.roundName">N/A</td>
+					      	<td  *ngIf="student.roundName">{{student.roundName}}</td>
+					      </tr>
+					      <tr>
+					      	<th>Round Date</th>
+					      	<td *ngIf="!student.roundDate">N/A</td>
+					      	<td  *ngIf="student.roundDate">{{student.roundDate | date}}</td>
+					      </tr>
+					      <tr>
+					      	<th>Course Name</th>
+					      	<td *ngIf="!student.courseName">N/A</td>
+					      	<td  *ngIf="student.courseName">{{student.courseName}}</td>
+					      </tr>
+					      <tr>
+					      	<th>Slot Time</th>
+					      	<td *ngIf="!student.time">N/A</td>
+					      	<td  *ngIf="student.time">{{student.time}}</td>
+					      </tr>
+				      </tbody>
+				    </table>
+				    <div class="new-page"></div>
+				  </div>
+			  </div>
+			</div>
+		</div>
+	</div>
+</div>

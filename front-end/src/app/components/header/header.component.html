@@ -1,0 +1,56 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
+  <div class="container-fluid">
+    <div class="navbar-wrapper">
+      <a class="navbar-brand" href="javascript:void(0);">{{currentSlide}}</a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="navbar-toggler-icon icon-bar"></span>
+      <span class="navbar-toggler-icon icon-bar"></span>
+      <span class="navbar-toggler-icon icon-bar"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end">
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown" *ngIf="role == 1">
+          <a class="nav-link"  id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-placement="bottom" title="Notifications">
+            <i class="material-icons" (click)="setNotificationCount()">notifications</i>
+            <span class="notification" *ngIf="notificationCount">{{notificationCount}}</span>
+            <p class="d-lg-none d-md-block">
+              Some Actions
+            </p>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right custom-notification" aria-labelledby="navbarDropdownMenuLink">
+            <span class="dropdown-item" *ngFor="let course of courseStatus">Course '{{course.course}}' For Round '{{course.round}}' Schedule On {{date}} {{course.date}} Is {{course.assign}}% Full</span>
+          </div>
+        </li>
+        <li class="nav-item">
+         <!--  <a class="nav-link" data-toggle="modal" (click)="openModel()" >
+              Change password
+          </a> -->
+           <a class="nav-link" data-toggle="tooltip" data-placement="bottom" title="Change Password">
+            <i class="material-icons" data-toggle="modal" (click)="openModel()">settings</i>
+            <p class="d-lg-none d-md-block">
+              Settings
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tooltip" data-placement="bottom" title="Logout">
+            <i class="material-icons" (click)="logout()">logout</i>
+            <p class="d-lg-none d-md-block">
+              Account
+            </p>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- End Navbar -->
+
+<!-- Modal -->
+<div id="changePassword" class="modal fade" role="dialog">
+  <app-change-password></app-change-password>
+</div>

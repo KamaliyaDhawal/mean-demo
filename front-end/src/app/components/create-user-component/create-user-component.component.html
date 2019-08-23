@@ -1,0 +1,218 @@
+<div class="content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+            <button type="button" data-toggle="modal" (click)="openCreateUserModel()"
+              class="btn btn-primary btn-square pull-right">Create User</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card-body">
+              <h4>
+                <span>User List</span>
+
+              </h4>
+              <div class="clearfix"></div>
+              <div class="table-responsive" *ngIf="userList?.length; then userBlock; else noUserBlock;"></div>
+              <ng-template #userBlock>
+                <div class="deatail-table">
+                  <table class="table" [mfData]="userList" #mf="mfDataTable" [mfRowsOnPage]="5">
+                    <thead class=" text-primary">
+                      <tr>
+                        <td colspan="7">
+                          <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>ID</th>
+
+                        <th>
+                          <mfDefaultSorter by="email">Email</mfDefaultSorter>
+                        </th>
+                        <th>
+                          <mfDefaultSorter by="course">Mobile No</mfDefaultSorter>
+                        </th>
+
+                        <th>
+                          <mfDefaultSorter by="time">Role</mfDefaultSorter>
+                        </th>
+
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let user of mf.data; index as i">
+                        <td>{{i+1}}</td>
+
+                        <td>{{user.email}}</td>
+                        <td>{{user.mobile}}</td>
+                        <td>{{roles[(user.role)-1].type}}</td>
+
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </ng-template>
+              <ng-template #noUserBlock>
+                <span class="text-warning">
+                  No User Found
+                </span>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="createUserComponent" data-backdrop="true" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Create New User</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12">
+            <h4><span>User</span></h4>
+            <div class="card-body">
+              <form [formGroup]='createUserForm'>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group bmd-form-group">
+                      <label class="bmd-label-static" [class.text-danger]="email.invalid && email.touched">Email<b
+                          class="text-danger"> *</b></label>
+                      <input type="text" class="form-control" formControlName='email' id='email'>
+                      <div *ngIf="email.touched && email.invalid">
+                        <small class="text-danger" *ngIf="email.errors?.required">
+                          Please Enter Email
+                        </small>
+                        <small class="text-danger" *ngIf="email.errors?.email">
+                          Please Enter Valid Email
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group bmd-form-group">
+                      <label class="bmd-label-static" [class.text-danger]="mobile.invalid && mobile.touched">Mobile
+                        No<b class="text-danger">*</b></label>
+                      <input type="text" class="form-control" formControlName='mobile' id='mobile'>
+                      <div *ngIf="mobile.touched && mobile.invalid">
+                        <small class="text-danger" *ngIf="mobile.errors?.required">
+                          Please Enter Mobile Number
+                        </small>
+                        <small class="text-danger" *ngIf="mobile.invalid && !mobile.errors?.required">
+                          Please Enter Valid Mobile Number
+                        </small>
+                      </div>
+
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group bmd-form-group">
+                      <label class="bmd-label-static" [class.text-danger]="false">Select Role
+                        No <b class="text-danger">*</b></label>
+                      <select class="form-control" id="role" formControlName='role'>
+                        <option *ngFor="let role of roles" value="{{role.id}}">{{role.type}}
+                        </option>
+
+                      </select>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="guidanceForm" formGroupName="guidanceUserSubForm" *ngIf="role.value == 3">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group bmd-form-group">
+                        <label class="bmd-label-static">First Name<b class="text-danger">*</b></label>
+                        <input type="text" class="form-control" formControlName="firstName">
+                        <small class="text-danger" *ngIf="firstName.invalid && firstName.touched">Please add first name
+                        </small>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group bmd-form-group">
+                        <label class="bmd-label-static">Last Name<b class="text-danger">*</b></label>
+                        <input type="text" class="form-control" formControlName="lastName">
+                        <small class="text-danger" *ngIf="lastName.invalid && lastName.touched">Please add last name </small>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group bmd-form-group">
+                        <label class="bmd-label-static">School Name<b class="text-danger">*</b></label>
+                        <input type="text" class="form-control" formControlName="schoolName" (input)="getRelatedSchoolName($event.target.value)">
+                        <small class="text-danger" *ngIf="schoolName.invalid && schoolName.touched"> Please add school name </small>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group bmd-form-group">
+                        <label class="bmd-label-static">School PhoneNo<b class="text-danger">*</b></label>
+                        <input type="number" class="form-control" formControlName="schoolPhoneNo">
+                        <div *ngIf="schoolPhoneNo.touched && schoolPhoneNo.invalid">
+                          <small class="text-danger" *ngIf="schoolPhoneNo.errors?.required">
+                            Please Enter Mobile Number
+                          </small>
+                          <!-- <small class="text-danger" *ngIf="schoolPhoneNo.invalid && !schoolPhoneNo.errors?.required">
+                            Please Enter Valid Mobile Number
+                          </small> -->
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group bmd-form-group">
+                        <label class="bmd-label-static">School Address<b class="text-danger">*</b></label>
+                        <textarea class="form-control" formControlName="schoolAddress"></textarea>
+                        <!-- <input type="text" class="form-control" formControlName="schoolAddress"> -->
+                        <div>
+                          <small class="text-danger" *ngIf="schoolAddress.invalid && schoolAddress.touched">
+                            Please add school address </small>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <button type="submit" [disabled]="!createUserForm.valid" class="btn btn-primary btn-round pull-left"
+                      (click)="onCreateUser()">Create User</button>
+                  </div>
+                </div>
+                <div class="clearfix"></div>
+              </form>
+              <div class="clearfix"></div>
+              <div class="table-responsive" *ngIf="courses?.length; then courseBlock; else noCourseBlock;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

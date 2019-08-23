@@ -1,0 +1,137 @@
+.registration .main-panel{ float: none !important; margin: auto !important; }
+.deatail-table table { margin-bottom: 40px !important; }
+mfpaginator ul:first-child {
+	float: left;
+}
+
+.login-panel .card-profile {
+	text-align: left;
+}
+
+.registration .bmd-label-static, .registration label, .registration p, .registration span, .registration ol, .registration small { color: #2d2d2d !important; font-size: 14px !important; text-transform: capitalize; }
+
+.registration .row h4 { border-left: 4px solid #f18635; padding: 5px; }
+
+.registration .form-control, .registration .is-focused .form-control {
+    background-image: linear-gradient(to top, #f18635 2px, rgba(156, 39, 176, 0) 2px), linear-gradient(to top, #d2d2d2 1px, rgba(210, 210, 210, 0) 1px);
+}
+
+.card-header-registration p { color: #ffffff !important; }
+.registration .courses .blockquote {
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    text-align: center;
+    border: 1px dotted green;
+    padding: 11px;
+}
+.registration a:hover {
+    background-color: #f18635 !important;
+}
+.registration .btn.btn-primary.disabled:hover, .registration .btn.btn-primary:disabled:hover {
+    background-color: #f18635;
+    border-color: #f18635;
+}
+
+.registration .multiselect-selected-text { color: #ffffff !important; }
+
+.registration .form-check .form-check-input:checked + .form-check-sign .check { background: #f18635; }
+
+.registration .card-header-registration, .registration .btn-primary { background-color: #f18635; }
+.registration .text-primary { color: #f18635 !important; }
+.nav-link { cursor: pointer; }
+.page-item.active .page-link { background-color:#a625a9; }
+.page-item.active .page-link:hover { color:#FFFFFF; }
+.bmd-form-group .bmd-label-static { font-size: 12px; }
+.page-not-found i { font-size: 300px; }
+
+.animationload {
+    background-color: #fff;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10000;
+}
+.osahanloading {
+    animation: 1.5s linear 0s normal none infinite running osahanloading;
+    background: #f18635 none repeat scroll 0 0;
+    border-radius: 50px;
+    height: 50px;
+    left: 50%;
+    margin-left: -25px;
+    margin-top: -25px;
+    position: absolute;
+    top: 50%;
+    width: 50px;
+}
+.osahanloading::after {
+    animation: 1.5s linear 0s normal none infinite running osahanloading_after;
+    border-color: #f18635 transparent;
+    border-radius: 80px;
+    border-style: solid;
+    border-width: 10px;
+    content: "";
+    height: 80px;
+    left: -15px;
+    position: absolute;
+    top: -15px;
+    width: 80px;
+}
+@keyframes osahanloading {
+0% {
+    transform: rotate(0deg);
+}
+50% {
+    background: #85d6de none repeat scroll 0 0;
+    transform: rotate(180deg);
+}
+100% {
+    transform: rotate(360deg);
+}
+}
+
+span.text-danger {
+    color: #f44336 !important;
+    font-weight: 400;
+}
+
+.fab {
+  position: fixed;
+  right: 50px;
+  bottom: 50px;
+}
+
+.fab a:last-child {
+  position: fixed!important;
+  right: 50px!important;
+  top: 125px!important;
+}
+
+.fab a{
+  width: 50px;
+  height: 50px;
+  background-color: #9e2ba7;
+  border-radius: 50%;
+  box-shadow: 0 6px 10px 0 #666;
+  transition: all 0.1s ease-in-out;
+  color: white;
+  text-align: center;
+  line-height: 50px;
+  display: block;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+ 
+.fab a:hover {
+   box-shadow: 0 6px 14px 0 #666;
+   transform: scale(1.05);
+}
+
+.fab a .material-icons {
+  color: #ffffff;
+}
+
+.animationload { background-color: #f8f8f8; }
+
+.notification { z-index: 1060!important; }

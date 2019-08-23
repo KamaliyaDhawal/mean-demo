@@ -1,0 +1,55 @@
+<div class="sidebar-wrapper">
+  <ul class="nav">
+    <li class="nav-item " *ngIf="role == 1 || role == 2" [class.active]="pageID === 7">
+      <a class="nav-link" routerLink="/dashboard">
+        <i class="material-icons">dashboard</i>
+        <p>Dashboard</p>
+      </a>
+    </li>
+    <li class="nav-item " *ngIf="role == 1" [class.active]="pageID === 1">
+      <a class="nav-link" routerLink="/course">
+        <i class="material-icons">library_books</i>
+        <p>Course</p>
+      </a>
+    </li>
+    <li class="nav-item " *ngIf="role == 1" [class.active]="pageID === 2 || pageID === 3">
+      <a class="nav-link" routerLink="/round" >
+        <i class="material-icons">av_timer</i>
+        <p>Round</p>
+      </a>
+    </li>
+    <!-- <li class="nav-item " [class.active]="pageID === 4">
+      <a class="nav-link" routerLink="/students">
+        <i class="material-icons">people</i>
+        <p>Students</p>
+      </a>
+    </li> -->
+    <li class="nav-item " *ngIf="role == 1" [class.active]="pageID === 5">
+      <a class="nav-link" routerLink="/students">
+        <i class="material-icons">table_chart</i>
+        <p>Students</p>
+      </a>
+    </li>
+    <li class="nav-item " *ngIf="role == 1" [class.active]="pageID === 6">
+      <a class="nav-link" routerLink="/templates">
+        <i class="material-icons">tab</i>
+        <p>Templates</p>
+      </a>
+    </li>
+
+    <li class="nav-item " *ngIf="role == 1" [class.active]="pageID === 8">
+      <a class="nav-link" routerLink="/create-user">
+        <i class="material-icons">person_add</i>
+        <p>Users</p>
+      </a>
+    </li>
+
+    <li class="nav-item " *ngIf="role == 3" [class.active]="pageID === 9">
+      <a class="nav-link" routerLink="/guidance-user">
+        <i class="material-icons">person</i>
+        <p>Guidance Page</p>
+      </a>
+    </li>
+
+  </ul>
+</div>

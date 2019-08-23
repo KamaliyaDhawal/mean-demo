@@ -1,0 +1,81 @@
+<div class="content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+            <h4><span>{{schoolName}}</span></h4>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <button type="button"
+                    class="btn btn-primary btn-square pull-right"  (click)="openModelToAddStudent()">Add Student</button>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card-body">
+                    <h4>
+                      <span >Student List</span>
+                     
+                    </h4>
+                    <div class="clearfix"></div>
+                    <div class="table-responsive" *ngIf="studentsList?.length; then studentBlock; else noStudentBlock;"></div>
+                    <ng-template #studentBlock>
+                      <div class="deatail-table">
+                        <table class="table" [mfData]="studentsList" #mf="mfDataTable" [mfRowsOnPage]="5">
+                          <thead class=" text-primary">
+                            <tr>
+                              <td colspan="7">
+                                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+                              </td>
+                            </tr>
+                            <tr>
+                              <th>ID</th>
+                              <th>FullName</th>
+                              <!-- <th><mfDefaultSorter by="email">Email</mfDefaultSorter></th> -->
+                              <th><mfDefaultSorter by="course">Course</mfDefaultSorter></th>
+
+                              <th><mfDefaultSorter by="time">Time</mfDefaultSorter></th>
+                            
+                          
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let student of mf.data; index as i">
+                              <td>{{i+1}}</td>
+                              <td>{{student.fullname? student.fullname:'N/A'}}</td>
+                              <!-- <td>{{student.email}}</td> -->
+                              <td>{{student.name}}</td>
+                              <td>{{student.time}}</td>
+                              
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </ng-template>
+                    <ng-template #noStudentBlock>
+                      <span class="text-warning">
+                        No Student Found
+                      </span>
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+              <div class="table-responsive" *ngIf="courses?.length; then courseBlock; else noCourseBlock;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="addStudent" class="modal fade"  role="dialog">
+  <app-user-list [schoolName]="schoolName"></app-user-list>
+</div>

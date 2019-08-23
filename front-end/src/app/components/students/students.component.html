@@ -1,0 +1,226 @@
+<div class="content">
+  <div class="container-fluid">
+    <div class="text-center" *ngIf="showLoader">
+      <!-- <img class="img-fluid"  src="../../assets/img/email-loader.gif"> -->
+      <div class="row">   
+        <div class="animationload">
+            <div class="osahanloading"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card"  *ngIf="!showLoader">
+      <div class="card-body">
+
+        <div class="row" [formGroup]="currentData">
+          <div class="col-md-3">
+            <div class="form-group bmd-form-group">
+              <div class="form-group bmd-form-group">
+                <label class="bmd-label-static">Today's Round</label>
+                <select class="form-control" formControlName="round" disabled="true">
+                  <option [selected]="!currentRound" disabled="true">-- No Round Available --</option>
+                  <option *ngIf="currentRound" value="{{currentRound.id}}" title="{{currentRound.name}}" [selected]="currentRound" disabled="true">{{currentRound.name}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group bmd-form-group">
+              <div class="form-group bmd-form-group">
+                <label class="bmd-label-static">Course Name</label>
+                <select class="form-control" formControlName="course" (change)="changeCourse($event.target.value)">
+                  <option value="*">All</option>
+                  <option *ngFor="let course of currentCourses; let i = index" value="{{course.id}}" title="{{course.name}}">{{course.name}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+              <div class="form-group bmd-form-group">
+                <div class="form-group bmd-form-group">
+                  <label class="bmd-label-static">Decision</label>
+                  <select class="form-control" id="decision" (change)="getStudent()" formControlName="decision">
+                    <option *ngFor="let decision of decisions" value="{{decision.id}}" title="{{decision.value}}">{{decision.value}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-group bmd-form-group">
+                <div class="form-group bmd-form-group">
+                  <label class="bmd-label-static">Reference</label>
+                  <select class="form-control" id="reference" (change)="getStudent()" formControlName="reference">
+                    <option *ngFor="let reference of references" value="{{reference.id}}" title="{{reference.value}}">{{reference.value}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+          	<div class="card-body">
+              <h4>
+                <span >Student List</span>
+                <span class="row pull-right">
+                  <input placeholder="Search.." class="form-control" (input)="search($event.target.value)">
+                </span>
+              </h4>
+              <div class="clearfix"></div>
+              <div class="table-responsive" *ngIf="students?.length; then studentBlock; else noStudentBlock;"></div>
+              <ng-template #studentBlock>
+                <div class="deatail-table">
+                  <table class="table" [mfData]="students" #mf="mfDataTable" [mfRowsOnPage]="5">
+                    <thead class=" text-primary">
+                      <tr>
+                        <td colspan="7">
+                          <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>ID</th>
+                        <th>FullName</th>
+                        <th><mfDefaultSorter by="email">Email</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="time">Time</mfDefaultSorter></th>
+                        <th>Decision</th>
+                        <th>Reference</th>
+                        <th class="td-actions text-right">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let student of mf.data  | grdFilter: {fullname: searchText, email:searchText, firstname: searchText, time: searchText, decision: searchText, reference:searchText, mobile:searchText}; index as i">
+                        <td>{{i+1}}</td>
+                        <td>{{student.fullname? student.fullname:(student.firstname? student.firstname:'N/A')}}</td>
+                        <td>{{student.email}}</td>
+                        <td>{{student.time}}</td>
+                        <td>
+                          <select class="form-control" (change)="updateStudent('decision', student, $event.target.value)">
+                            <ng-container *ngFor="let decision of decisions">
+
+                              <option value="{{decision.id}}" title="{{decision.value}}" *ngIf="student.decision == 0 && (decision.id == 0 || decision.id == 1 || decision.id == 2) " [selected]="decision.id == student.decision" [disabled]="decision.id == student.decision">{{decision.value}}</option>
+
+                              <option value="{{decision.id}}" title="{{decision.value}}" *ngIf="student.decision == 1 && (decision.id == 1 || decision.id == 2 || decision.id == 3 || decision.id == 4) " [selected]="decision.id == student.decision" [disabled]="decision.id == student.decision">{{decision.value}}</option>
+
+                              <option value="{{decision.id}}" title="{{decision.value}}" *ngIf="(student.decision == 3 || student.decision == 4) && (decision.id == 2 || decision.id == 3 || decision.id == 4) " [selected]="decision.id == student.decision" [disabled]="decision.id == student.decision">{{decision.value}}</option>
+
+                              <option value="{{decision.id}}" title="{{decision.value}}" *ngIf="(student.decision == 2) && (decision.id == 1 || decision.id == 2) " [selected]="decision.id == student.decision" [disabled]="decision.id == student.decision">{{decision.value}}</option>
+
+                            </ng-container>
+                          </select>
+                        </td>
+                        <th>
+                          <select class="form-control" (change)="updateStudent('reference', student, $event.target.value)">
+                            <option *ngFor="let reference of references" value="{{reference.id}}" title="{{reference.value}}" [selected]="reference.id == student.reference" [hidden] = "reference.value == 'All'">{{reference.value}}</option>
+                          </select>
+                        </th>
+                        <td class="td-actions text-right">
+                          <button type="button" rel="tooltip" class="btn btn-primary btn-link btn-sm">
+                            <i class="material-icons" rel="tooltip" title="Update {{student.fullname}}'s Details" (click)="editStudent(student.student_id)">edit</i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </ng-template>
+              <ng-template #noStudentBlock>
+                <span class="text-warning">
+                  No Student Found
+                </span>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+
+        <div class="pull-right" *ngIf="students && !print">
+          <h4>
+            <button class="btn btn-primary" (click)="studentsDetails()">
+              Student-Details <i class="material-icons">remove_red_eye</i>
+            </button>
+            <button class="btn btn-primary" (click)="exportFile()">
+              Export Data <i class="material-icons">cloud_download</i>
+            </button>
+            <button class="btn btn-primary" (click)="sendMail()">
+              Send Result Mail <i class="material-icons">alternate_email</i>
+            </button>
+            <button class="btn btn-primary" (click)="sendSMS()">
+              Send Result SMS <i class="material-icons">send</i>
+            </button>
+            <button class="btn btn-primary" (click)="printReports()">
+              Print Student List <i class="material-icons">print</i>
+            </button>
+             <button class="btn btn-primary" data-toggle="modal" data-target="#mailModal">
+              Send Custom Mail <i class="material-icons">alternate_email</i>
+            </button>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#smsModal">
+              Send Custom SMS <i class="material-icons">send</i>
+            </button>
+          </h4>
+        </div>
+
+        <!-- Model For Custom Email -->
+          <div class="modal fade" id="mailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header btn-secondary">
+                  <i class="material-icons">email</i>
+                  <h5 class="modal-title" id="exampleModalLabel">&nbsp; Send Custom Email To Listed Student</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <h3>Email Subject</h3>
+                  <input type="text" class="form-control" [(ngModel)]="customMailSubject">
+                  <h3>Email Body</h3>
+                  <ck-editor name="editor1" [(ngModel)]="customMail"></ck-editor>
+                </div>
+                <div class="modal-footer">
+                  <span class="pull-left text-primary">
+                    *Do Not Change {{StudentName}} As It Is Getting Used For Dynamic Student Name. <br>
+                    *Do Not Change {{CourseName}}  As It Is Getting Used For Dynamic Course Name.
+                  </span>
+                  <button type="button" class="btn btn-primary" (click)="sendCustomData('email')" data-dismiss="modal">Send</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <!-- Model For Custom SMS -->
+          <div class="modal fade" id="smsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header btn-secondary">
+                  <i class="material-icons">sms</i>
+                  <h5 class="modal-title" id="exampleModalLabel">&nbsp; Send Custom SMS To Listed Student</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <h3>SMS Body</h3>
+                  <h4 class="text-danger" *ngIf="customsms.errors?.maxlength">
+                    Can Not Send More Then 160 Characters In One SMS.
+                  </h4> 
+                  <textarea [(ngModel)]="customSMS" maxlength="160" #customsms="ngModel" width="100%"></textarea>
+                </div>
+                <div class="modal-footer">
+                  <span class="pull-left text-primary">
+                    *Use {{StudentName}}  For Add Dynamic Student Name. <br>
+                    *Use {{CourseName}}  For Add Dynamic Course Name.
+                  </span>
+                  <button type="button" class="btn btn-primary" (click)="sendCustomData('sms')" data-dismiss="modal" *ngIf="!customsms.errors">Send</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+                              

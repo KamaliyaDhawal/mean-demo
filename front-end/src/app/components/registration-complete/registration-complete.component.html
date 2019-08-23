@@ -1,0 +1,103 @@
+<div class="registration">
+  <div class="main-panel">
+    <!-- End Navbar -->
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header card-header-registration">
+                <img src="../../../assets/img/collageLogo.svg" alt="Liberties College" class="rounded mx-auto d-block mb-1"/>
+                <h4 class="card-title border-none">Registration Complate</h4>
+                <p class="card-category">Register Your Profile Is Registered.  <b class="pull-right" *ngIf="studentData.email">Please Check Your Email For More Information</b></p>
+              </div>
+              <div class="card-body">
+              	<div class="tim-typo mb-3 courses">
+                    <blockquote class="blockquote">
+                    	<span class="tim-note mr-3">Courses:</span>
+	                      	<small>
+	                        	{{studentData.courses}}
+	                      	</small>
+                    </blockquote>
+                </div>
+              	<div class="tim-typo mb-4">
+                    <h3>
+                      	Dear {{studentData.username}}
+                    </h3>
+	                
+	            </div>
+              	<div class="ml-5 pl-2 pr-2">
+              		<div class="tim-typo text-center text-success pr-3">
+	                    <blockquote class="blockquote">
+		                      	<span>
+		                        	Thank you for your application to the above course.  Please take note of the interview date and time.
+		                      	</span>
+	                    </blockquote>
+	                </div>
+		            <div class="table-responsive">
+	                    <table class="table">
+	                      	<thead class=" text-primary">
+	                      		<th>ID</th>
+		                        <th>Course Name</th>
+		                        <th>Interview Date</th>
+		                        <th>Interview Time</th>
+	                      	</thead>
+	                      	<tbody>
+	                        	<tr *ngFor="let courseData of studentData.coursesData; index as i">
+		                          <td>{{i+1}}</td>
+		                          <td>{{courseData.name}}</td>
+		                          <td>{{courseData.date}}</td>
+		                          <td>{{courseData.time}}</td>
+		                        </tr>
+	                       </tbody>
+	                    </table>
+	              	</div>
+	              	<div class="tim-typo">
+	              		<a href="https://goo.gl/maps/RxZbQXckuJR2">
+							<p>Interviews will be held in <b><u>Liberties College, Bull Alley Street, Dublin 8</u></b></p>
+						</a>
+		            </div>
+		            <div class="tim-typo">
+		            	<p class="text-info"><i>(The College is opposite St. Patrick’s Cathedral and down the hill from Christchurch Cathedral)</i></p>
+						<p>You will be interviewed by two tutors who teach on the course and your interview will take approximately fifteen minutes.</p>
+						<p>You will receive written notification of the outcome of your interview within two weeks of your interview.</p>
+					</div>
+					<div class="tim-typo">
+	                    <h3>
+	                      	<u>Please Note</u>
+	                    </h3>
+		                <ol>
+		                	<li>You must bring two written references to the interview</li>
+		                	<li>Candidates who have <b><u>completed</u></b> the Leaving Certificate (or equivalent) should bring a copy of their results to interview. </li>
+		                	<li>If you are unable to attend for interview please contact the Admissions Office at 01 4540044.</li>
+		                </ol>
+		                <p>
+		                	<i>
+		                		** Applicants may be asked to complete a short written <u>Interview Preparation Test</u> before attending interview. Please arrive at least 15mins before interview to complete Interview Preparation.
+		                	</i>
+		                </p>
+		                <p class="text-success">
+		                	<b>We look forward to meeting you on scheduled time</b>
+		                </p>
+		            </div>
+		        </div>
+
+	            <div class="tim-typo text-secondary">
+	            	<br>
+	                <span class="tim-note">
+						Yours sincerely,
+			 			<br><br>
+						Admissions Office <br>
+						Gemma Woods <br>
+						Liberties College <br>
+					</span>
+					<img src="../../../assets/img/logo.png" height="50px" class="img-responsive">
+				</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>

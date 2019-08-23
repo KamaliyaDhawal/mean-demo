@@ -1,0 +1,118 @@
+<div class="content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+            <h4><span >Round List</span></h4>
+          	<div class="card-body">
+              <form [formGroup]="newRound" (ngSubmit)="saveRound()">
+                <div class="row">
+                  <div class="col-md-3 mt-2">
+                    <div class="form-group bmd-form-group">
+                      <label class="bmd-label-static" [class.text-danger]="getName.invalid && getName.touched">Round Name</label>
+                      <input type="text" class="form-control" formControlName="name" id='name'>
+                      <small class="text-danger" *ngIf="getName.invalid && getName.touched">Please Enter Name</small>
+                    </div>
+                  </div>
+                  <div class="col-md-3 mt-2">
+                    <div class="form-group bmd-form-group">
+                      <label class="bmd-label-static" >Select Date</label>
+                      <input type="text" [attr.disabled]="!getName.value ? 'disabled' : null" class="form-control" formControlName="date" id='date'>
+                      <small class="text-danger" *ngIf="getDate.invalid && getDate.touched">Please Enter Date</small>
+                    </div>
+                  </div>
+                  <div class="col-md-3 mb-1">
+                    <div class="form-group bmd-form-group">
+                      <label class="bmd-label-static">Courses</label>
+                      <select class="form-control"  (change)="getRound($event.target.value)" id="courseSelector" multiple="multiple">
+                        <option *ngFor="let course of courses" value="{{course.id}}">{{course.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <button type="submit" [disabled]="newRound.invalid || saved" class="btn btn-primary pull-right">Save</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="clearfix"></div>
+              </form>
+              <div class="clearfix"></div>
+              <div class="table-responsive" *ngIf="rounds?.length; then roundBlock; else noRoundBlock;"></div>
+              <ng-template #roundBlock>
+                <div class="deatail-table">
+                  <table class="table" [mfData]="rounds" #mf="mfDataTable" [mfRowsOnPage]="5">
+                    <thead class=" text-primary">
+                      <tr>
+                        <td colspan="4">
+                          <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>ID</th>
+                        <th><mfDefaultSorter by="name">Name</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="date">Date</mfDefaultSorter></th>
+                        <th class="td-actions text-right">Action</th>
+                      </tr>
+                    </thead>
+                    {{round}}
+                    <tbody>
+                      <tr *ngFor="let round of mf.data; index as i">
+                        <td>{{i+1}}</td>
+                        <td>{{round.name}}</td>
+                        <td>{{round.schedule_dt | date : 'dd-MM-yyyy' }}</td>
+                        <td class="td-actions text-right">
+                          <button type="button" rel="tooltip" title="Edit Round: {{round.name}}" class="btn btn-primary btn-link btn-sm">
+                            <i class="material-icons" (click)="editRound(round)">edit</i>
+                          </button>
+                          
+                          <!-- <button type="button" rel="tooltip" title="Remove Round: {{round.name}}" class="btn btn-danger btn-link btn-sm">
+                            <i class="material-icons" data-toggle="modal" data-target="#deleteModal" (click)='getRoundDetails(round)'>close</i>
+                          </button> -->
+
+                          <button [disabled]="!round.course_id? 'disabled':null" type="button" rel="tooltip" title="Check {{round.name}}'s Slots" class="btn btn-primary pull-right" (click)="goToSlot(round)">Slots
+                          <i class="material-icons" data-toggle="modal" data-target="#deleteModal" (click)='getRoundDetails(round)'>call_missed_outgoing</i>
+                        </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </ng-template>
+              <ng-template #noRoundBlock>
+                <span class="text-warning">
+                  No Round Found
+                </span>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Delete Modal Start -->
+      <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header btn-danger">
+              <h5 class="modal-title" id="exampleModalLabel">Are You Sure You Want To Delete This Round ?</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Once You Delete Any Round You Will Not Longer Access Of This Round
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-danger" (click)="deleteRound()" data-dismiss="modal">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Delete Modal End -->
+    </div>
+  </div>
+</div>
+
+                              

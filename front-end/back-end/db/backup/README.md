@@ -1,0 +1,1 @@
+Cron Run At 2:00 Am GTS Daily and mail will be send to admin.

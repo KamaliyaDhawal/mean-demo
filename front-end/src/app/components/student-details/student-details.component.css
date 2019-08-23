@@ -1,0 +1,24 @@
+.card{
+  width: 21cm;
+  margin: auto;
+  background-color: #ffffff;
+  padding-top: 20px;
+  margin-top: 30px;
+  border-radius: 0px;
+}
+
+table {
+	page-break-after: always;
+}
+
+table td {
+	padding: 0.50rem;
+	text-transform: capitalize;
+}
+
+div.sticky {
+  float: right;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+}

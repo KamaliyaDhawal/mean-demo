@@ -1,0 +1,77 @@
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Add Student</h5>
+      <button type="button" class="close" (click)="onClose()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form class="registration" [formGroup]='addStudentForm'>
+        <div class="row">
+          <div class="col-md-6 mt-1">
+            <div class="form-group bmd-form-group">
+              <label class="bmd-label-static" [class.text-danger]="false">Select First Course (Required)</label>
+              <select class="form-control" id="course1" formControlName='course1'>
+                <option value="-1">Select First Choice</option>
+                <option *ngFor="let course of courses" value="{{course.id}}">{{course.name}}
+                </option>
+
+              </select>
+            </div>
+
+
+          </div>
+          <div class="col-md-6 mt-1">
+            <div class="form-group bmd-form-group">
+              <label class="bmd-label-static">Select Second Choice (Optional)</label>
+              <select class="form-control" id="course2">
+                  <option value="-1">Select Second Choice</option>
+
+              </select>
+              <span class="text-danger" *ngIf="course1 && course1.invalid && course1.touched">Please select course </span>
+            </div>
+          </div>
+
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group bmd-form-group">
+              <label class="bmd-label-static">First Name<b class="text-danger">*</b></label>
+              <input type="text" class="form-control" formControlName="firstName">
+              <span class="text-danger" *ngIf="firstName.invalid && firstName.touched">Please add
+                first name </span>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group bmd-form-group">
+              <label class="bmd-label-static">Surname<b class="text-danger">*</b></label>
+              <input type="text" class="form-control" formControlName="lastName">
+              <span class="text-danger" *ngIf="lastName.invalid && lastName.touched">Please add last
+                name </span>
+            </div>
+          </div>
+        </div>
+        <br />
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group bmd-form-group">
+              <label class="bmd-label-static">Birth Date<b class="text-danger">*</b></label>
+              <input type="text" class="form-control" id="birthdate" formControlName="dateOfBirth">
+              <span class="text-danger" *ngIf="dateOfBirth.invalid && dateOfBirth.touched">Please add birthdate </span>
+            </div>
+          </div>
+        </div>
+        <br />
+
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" [disabled]="false" class="btn btn-primary" (click)="addUser()">Save Student</button>
+      <button type="button" class="btn btn-secondary" (click)="onClose()">Close</button>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</div>

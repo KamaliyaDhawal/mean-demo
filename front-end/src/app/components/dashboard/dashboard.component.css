@@ -1,0 +1,3 @@
+.card .card-footer { display: block; }
+.card .card-footer table { display: table; }
+.card .card-footer td, .card .card-footer th { text-align: center; font-size: 16px; }

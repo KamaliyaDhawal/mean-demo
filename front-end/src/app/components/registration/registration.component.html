@@ -1,0 +1,697 @@
+<div class="container" *ngIf="submited">
+  <div class="row">   
+    <div class="animationload">
+        <div class="osahanloading"></div>
+    </div>
+  </div>
+</div>
+<div class="registration" data-color="orange">
+<!-- {{newStudent.value | json}} -->
+  <div class="main-panel">
+    <!-- End Navbar -->
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header card-header-registration">
+                <img src="../../../assets/img/collageLogo.svg" alt="Liberties College" class="rounded mx-auto d-block mb-1 img-fluid"/>
+                <span *ngIf="studentUID; then updateForm; else registrationForm"></span>
+                <ng-template #registrationForm>
+                  <h4 class="card-title border-none">Application Form </h4>
+                  <p class="card-category ml-1">Apply for your selected courses below and you will be assigned an interview time and date. <b class="pull-right ">Fields marked * are mandatory</b></p>
+                </ng-template>
+
+                <ng-template #updateForm>
+                  <h4 class="card-title border-none">Update Form </h4>
+                  <p class="card-category ml-1">Change Student data <b class="pull-right ">Fields marked * are mandatory</b></p>
+                </ng-template>
+              </div>
+
+              <div class="card-body">
+                <form class="registration" [formGroup]='newStudent'>
+                  <div class="row">
+                    <div class="col-md-6 mt-1">
+                      <div class="form-group bmd-form-group">
+                        <label class="bmd-label-static">First Choice (Required)<b class="text-danger">*</b></label>
+                        <select class="form-control" id="firstChoice" multiple="multiple">
+                          <option *ngFor="let course of courses" value="{{course.id}}">{{course.name}}</option>
+                        </select>
+                      </div>
+                      <span class="text-capitalize text-danger" *ngIf="firstChoiceError != null && showError"> * Please select first choice </span>
+                    </div>
+                    <div class="col-md-6 mt-1">
+                      <div class="form-group bmd-form-group">
+                        <label class="bmd-label-static">Second Choice (Optional)</label>
+                        <select class="form-control" id="secondChoice" multiple="multiple"></select>
+                      </div>
+                    </div>
+	            		</div>
+
+                   
+
+                  <div formGroupName="personalDetails">
+                    <div class="row mt-4">
+                    	<div class="col-md-12">
+                    		<h4><span class="text-primary text-uppercase">Personal Details</span></h4>
+                    	</div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group bmd-form-group">
+                          <label class="bmd-label-static">First Name<b class="text-danger">*</b></label>
+                          <input type="text" class="form-control" formControlName="firstName">
+                        </div>
+                        <span class="text-danger text-capitalize" *ngIf="getFirstName.invalid && showError">* Please add first name </span>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group bmd-form-group">
+                          <label class="bmd-label-static">Surname<b class="text-danger">*</b></label>
+                          <input type="text" class="form-control" formControlName="lastName">
+                        </div>
+                        <span class="text-danger text-capitalize" *ngIf="getLastName.invalid && showError">* Please add last name </span>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group bmd-form-group">
+                          <label class="bmd-label-static">Birth Date<b class="text-danger">*</b></label>
+                          <input type="text" class="form-control" id="birthdate" formControlName="birthdate">
+                        </div>
+                        <span class="text-danger text-capitalize" *ngIf="getBirthdate.invalid  && showError">* Please add birthdate </span>
+                      </div>
+
+                      <div class="col-md-6">
+                        <div class="form-group bmd-form-group">
+                          <label class="bmd-label-static">Age</label>
+                          <input type="text" class="form-control" formControlName="age" disabled>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group bmd-form-group">
+                          <label class="bmd-label-static">P.P.S. Number<b class="text-danger">*</b></label>
+                          <input type="text" class="form-control" formControlName="PPSnumber">
+                        </div>
+
+                        <span *ngIf="getPPSNumber.invalid && showError">
+                          <span class="text-danger text-capitalize" *ngIf="getPPSNumber.errors?.required">* Please Enter PSS Number </span>
+                          <span class="text-danger text-capitalize" *ngIf="getPPSNumber.errors?.pattern">* PSS Number Not allowed special characters and shoud contain maximum 10 characters </span>
+                        </span>
+                      </div>
+
+                      <div class="col-md-6 bmd-form-group" *ngIf="!studentUID">
+                        <div class="form-group">
+                          <label class="bmd-label-static">Gender<b class="text-danger">*</b></label>
+                          <select class="form-control" formControlName="gender">
+                            <option value="null" disabled="disabled">--- Select Gender ---</option>
+                            <option value="1">Male</option>
+                            <option value="2">Female</option>
+                            <option value="3">Other</option>
+                          </select>
+                        </div>
+                        <span class="text-danger text-capitalize" *ngIf="getGender.invalid && showError">* Please select gender </span>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group bmd-form-group">
+                          <label class="bmd-label-static">Email<b class="text-danger">*</b></label>
+                          <input type="email" rel="tooltip" title="Interview info will be sent here" class="form-control" formControlName="email" (input)="checkEmail()">
+                        </div>
+
+                        <span *ngIf="getMobile.invalid && getEmail.invalid && showError">
+                          <span class="text-danger text-capitalize" *ngIf="getEmail.errors?.required">* At least one of email OR phone number is require </span>
+                        </span>
+                        <span class="text-danger text-capitalize" *ngIf="getEmail.errors?.email && showError">* Please add valid email </span>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group bmd-form-group">
+                          <label class="bmd-label-static">Mobile Number<b class="text-danger">*</b></label>
+                          <input type="text"  rel="tooltip" title="Interview info will be sent here" class="form-control" formControlName="mobile" (input)="checkMobile()">
+                        </div>
+
+                        <span *ngIf="getMobile.invalid && getEmail.invalid && showError"> 
+                          <span class="text-danger text-capitalize" *ngIf="getMobile.errors?.required">
+                            At least one of email OR phone number is require 
+                          </span>
+                        </span>
+                        <span class="text-danger text-capitalize" *ngIf="getMobile.errors?.pattern && showError">
+                          Please enter valid mobile number.
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group bmd-form-group">
+                          <label class="bmd-label-static">Home Telephone Number</label>
+                          <input type="text" class="form-control" formControlName="homeTelNumber" >
+                        </div>
+                        <span class="text-danger" *ngIf="getHomeTelNumber.invalid && getHomeTelNumber.touched  && showError">* Please Enter Valid Number</span>
+                      </div>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Address<b class="text-danger">*</b></label>
+                          <div class="form-group">
+                            <textarea class="form-control" rows="2" formControlName="homeAddress"></textarea>
+                          </div>
+                          <span class="text-danger" *ngIf="getHomeAddress.invalid && showError">* Please Enter Home address</span>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Postcode</label>
+                          <div class="form-group">
+                            <textarea class="form-control" formControlName="postcode" rows="2" ></textarea>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div *ngIf="getAge.value <= 18 && !studentUID">
+	                  <div class="row mt-4">
+	                    <div class="col-md-12">
+	                      <h4><span class="text-primary text-uppercase">Guardian/Parent Details</span></h4>
+	                    </div>
+	                  </div>
+
+	                  <div class="row">
+	                    <div class="col-md-6 mt-1">
+	                      <div class="form-group bmd-form-group">
+	                        <label class="bmd-label-static">Guardian/Parent Name (if under 18)</label>
+	                        <input type="text" class="form-control" formControlName="guardianName">
+	                      </div>
+	                    </div>
+	                    <div class="col-md-6 bmd-form-group">
+	                      <div class="form-group">
+	                        <label class="bmd-label-static">Guardian/Parent Phone Number</label>
+	                        <input type="text" class="form-control" formControlName="guardianPhone">
+	                      </div>
+                        <span class="text-danger" *ngIf="getGuardianPhone.invalid && getGuardianPhone.touched  && showError">* Please Enter Valid Number</span>
+                      </div>
+	                  </div>
+                  </div>
+
+                  <div class="row mt-4" *ngIf="!studentUID">
+                    <div class="col-md-12">
+                      <h4><span class="text-primary text-uppercase">Nationality Status</span> <b class="text-danger">*</b></h4>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="!studentUID">
+                    <div class="col-md-12">
+                        <div class="row">  
+                         <div class="col-md-6 bmd-form-group">
+                            <select class="form-control mt-4"  formControlName="nationalityStatus" placeholder ="tets">
+                              <option disabled="true" value="null"> -- Please tick appropriate category -- </option>
+                              <option *ngFor="let nationalityStatus of nationalityStatuses" value="{{nationalityStatus.id}}">{{nationalityStatus.value}}</option>
+                            </select>
+                            <span class="text-danger" *ngIf="getNationalityStatus.invalid && showError">* Please Select nationality status</span>
+                          </div>
+                          <div class="col-md-6 bmd-form-group">
+                            <div class="form-group bmd-form-group">
+                              <label class="bmd-label-static">Country</label>
+                              <input type="text" class="form-control" formControlName="nationalityInfo">
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+
+                  <div class="row mt-4" *ngIf="!studentUID">
+                    <div class="col-md-12">
+                      <h4><span class="text-primary text-uppercase">HSE Medical Card Details</span></h4>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="!studentUID">
+                    <div class="col-md-12">
+                      <div class="form-group bmd-form-group">
+                        <label class="bmd-label-static">Are you a HSE Medical Card Holder? <b class="text-danger">*</b></label>
+                        <div class="form-check form-check-inline">
+                          <label>
+                            <input type="radio" value="1" formControlName="hseMedicalCardStatus" [checked]="getHSEMedicalCardStatus.value == 1">
+                            <span class="form-check-label">Yes</span>
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label>
+                            <input type="radio" value="0" formControlName="hseMedicalCardStatus" [checked]="getHSEMedicalCardStatus.value == 0">
+                            <span class="form-check-label">No</span>
+                          </label>
+                        </div>
+                      </div>
+                      <span class="text-danger" *ngIf="getHSEMedicalCardStatus.invalid && showError">* Please provide HSE Medical Card Details </span>
+                    </div>
+                  </div>
+
+                  <div formGroupName="educationDetails" *ngIf="!studentUID">
+
+                    <div class="row mt-4">
+                      <div class="col-md-12">
+                        <h4><span class="text-primary text-uppercase">Education Details</span></h4>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group bmd-form-group">
+                          <select class="form-control" formControlName="studentStatus">
+                            <option disabled="true" value="null"> -- Please Select the appropriate box to indicate your status on 30th September last -- </option>
+                            <option *ngFor="let reference of studentStatusData" value="{{reference.id}}" title="{{reference.value}}">{{reference.value}}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group bmd-form-group">
+                          <select class="form-control" formControlName="highestAward">
+                            <option disabled="true" value="null"> -- Highest Award Attained -- </option>
+                            <option *ngFor="let award of awardData" value="{{award.id}}" title="{{award.value}}">{{award.value}}</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group bmd-form-group">
+                          <label class="bmd-label-static">Year Attained</label>
+                          <input type="text" class="form-control" formControlName="schoolLeavingYear">
+                        </div>
+                        <span class="text-danger" *ngIf="getEducationSchoolLeavingYear.invalid && showError">Please Enter valid year</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div formGroupName="leavingCertificateDetails" *ngIf="!studentUID">
+
+                    <div class="row mt-4">
+                      <div class="col-md-12">
+                        <h4><span class="text-primary text-uppercase">Leaving Certificate Details</span></h4>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group bmd-form-group">
+                          <label class="bmd-label-static">Name of School attended for Leaving Certificate</label>
+                          <input type="text" class="form-control" (change)="onSelectSchool($event.target.value)" formControlName="schoolName" list="school_info">
+                          <datalist id="school_info">
+                            <option *ngFor="let school of schoolInfo" value="{{school.name}}"></option>
+                         </datalist>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <div class="form-group bmd-form-group">
+                          <label class="bmd-label-static">Year Attained</label>
+                          <input type="text" class="form-control" formControlName="schoolLeavingYear">
+                        </div>
+                        <span class="text-danger" *ngIf="getLeavingCertificateSchoolLeavingYear.invalid && showError">Please Enter valid year</span>
+                      </div>
+                      
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>School Address</label>
+                          <div class="form-group">
+                            <textarea class="form-control" rows="2" formControlName="schoolAddress"></textarea>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group bmd-form-group pt-3">
+                          <label class="bmd-label-static mt-3">Mode</label>
+                          <div class="row pl-3">  
+                            <div class="col-md-2 form-check ">
+                              <div class="form-check form-check-inline">
+                                <label>
+                                  <input type="radio" formControlName="modeStatus" value="1" [checked]="getModeStatus.value == 1">
+                                  <span class="form-check-label">Traditional</span>
+                                </label>
+                              </div>
+                            </div>
+                            <div class="col-md-2 form-check mt-3">
+                              <div class="form-check form-check-inline">
+                                <label>
+                                  <input type="radio" formControlName="modeStatus" value="2" [checked]="getModeStatus.value == 2">
+                                  <span class="form-check-label">LCVP</span>
+                                </label>
+                              </div>
+                            </div>
+                            <div class="col-md-2 form-check mt-3">
+                              <div class="form-check form-check-inline">
+                                <label>
+                                  <input type="radio" formControlName="modeStatus" value="3" [checked]="getModeStatus.value == 3">
+                                  <span class="form-check-label">LCA</span>
+                                </label>
+                              </div>
+                            </div>
+                            <div class="col-md-2 form-check mt-3">
+                              <div class="form-check form-check-inline">
+                                <label>
+                                  <input type="radio" formControlName="modeStatus" value="4" [checked]="getModeStatus.value == 4">
+                                  <span class="form-check-label">Other</span>
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="row">
+                            <div class="col-md-12 mb-5">
+                              <div class="form-group bmd-form-group">
+                                <label class="bmd-label-static">Other Mode</label>
+                                <input type="text" class="form-control" formControlName="modeInfo">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group bmd-form-group pt-3">
+                          <label class="bmd-label-static mt-3">Examination Results</label>
+                          <div class="row pl-3">
+                            <div class="col-md-4 form-check mt-3" formArrayName="exminationResults" *ngFor="let result of getExminationResults.controls; let i = index" (change)="updateResult()" >
+                              <label class="form-check-label mb-3">
+                                <input class="form-check-input" type="checkbox" [formControlName]=i>
+                                <span class="form-check-sign">
+                                  <span class="check"></span>
+                                </span>
+                                {{results[i].name}}
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr *ngIf="getExminationResultsStatus.value == null || getExminationResultsStatus.value == false">
+
+                    <div class="row" *ngIf="getExminationResultsStatus.value != null && getExminationResultsStatus.value != false">
+                      <div class="col-md-6">
+                        <div class="form-group bmd-form-group">
+                          <label>Subjects Studied</label>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="form-group bmd-form-group">
+                          <label>H/O</label>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="form-group bmd-form-group">
+                          <label>Grade</label>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="form-group bmd-form-group">
+                          <label>Year</label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div formArrayName="subjectWiseResults" *ngIf="getExminationResultsStatus.value != null && getExminationResultsStatus.value != false">
+                      <div *ngFor="let subject of getSubjectWiseResults.controls; let i = index">
+                        <div class="row" [formGroupName]="i">
+                          <div class="col-md-6">
+                            <div class="form-group bmd-form-group">
+                              <input type="text" class="form-control" placeholder="Subject Name" formControlName="name" (change)="updateNameValidation(i)">
+                            </div>
+                            <span class="text-danger" *ngIf="getSubjectWiseResults.controls[i].controls.name.invalid && showError">Please Enter Subject name</span>
+                          </div>
+                          <div class="col-md-2">
+                            <div class="form-group bmd-form-group">
+                              <input type="text" class="form-control" placeholder="H or O" formControlName="level" (change)="updateNameValidation(i)">
+                            </div>
+                          </div>
+                          <div class="col-md-2">
+                            <div class="form-group bmd-form-group">
+                              <input type="text" class="form-control" placeholder="Grade For" formControlName="grade" (change)="updateNameValidation(i)">
+                            </div>
+                          </div>
+                          <div class="col-md-2">
+                            <div class="form-group bmd-form-group">
+                              <input type="text" class="form-control" placeholder="Passing Year" formControlName="year" (change)="updateNameValidation(i)">
+                            </div>
+                            <span class="text-danger" *ngIf="getSubjectWiseResults.controls[i].controls.year.invalid && getSubjectWiseResults.controls[i].controls.year.touched && showError">Please Enter valid year</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row" *ngIf="rowShow<10 && getExminationResultsStatus.value != null && getExminationResultsStatus.value != false">
+                      <div class="col-md-12">
+                        <button class="btn btn-success" [disabled]="getSubjectWiseResults.invalid || !otherRows" (click)="addRow(i)"><i class="material-icons">add</i>Add Row </button>
+                      </div>
+                    </div>
+
+
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label>Any Post Leaving Certificate Course or Third Level Course previously attended or completed</label>
+                          <div class="form-group">
+                            <textarea class="form-control" rows="2" formControlName="extraCertificate"></textarea>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Other Examinations</label>
+                          <div class="form-group">
+                            <textarea class="form-control" rows="2" formControlName="otherExamination"></textarea>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Work Experience or Training</label>
+                          <div class="form-group">
+                            <textarea class="form-control" rows="2" formControlName="workExperience"></textarea>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row mt-4" *ngIf="!studentUID">
+                    <div class="col-md-12">
+                      <h4><span class="text-primary text-uppercase">Relevant Work Experience</span></h4>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="!studentUID">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label>Please provide details of any other training or relevant work Experience</label>
+                        <div class="form-group">
+                          <textarea class="form-control" rows="2" formControlName="workExperience"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row mt-4" *ngIf="!studentUID">
+                    <div class="col-md-12">
+                      <h4><span class="text-primary text-uppercase">Service And Support</span></h4>
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="!studentUID">
+                    <div class="col-md-12">
+                      <label class="bmd-label-static mt-3">Other Information: The College Has An Inclusive Admissions Policy And Will Try To Provide Appropriate Supports And Services For All Course Participants. If you have a disability please enter the information below.</label>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="!studentUID">
+                    <div class="col-md-12 text-center">
+                      <label class="bmd-label-static text-primary text-capitalize"><i>*** Your information will be treated as confidential and will not adversely affect your application ***</i></label>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="!studentUID">
+                    <div class="col-md-4" hidden="true">
+                      <div class="form-group">
+                        <select class="form-control"  formControlName="disabilityCondition">
+                          <option disabled="true" value="null"> -- If yes, please indicate your impairment -- </option>
+                          <option *ngFor="let disabilityCond of disabilityConditions" value="{{disabilityCond.id}}">{{disabilityCond.value}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-4"  hidden="true">
+                      <div class="form-group">
+                      	<select class="form-control"  formControlName="disabilitySupport">
+                          <option disabled="true" value="null"> -- Please specify supports you currently use -- </option>
+                          <option *ngFor="let disabilitySupp of disabilitySupports" value="{{disabilitySupp.id}}">{{disabilitySupp.value}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    
+                    <div class="col-md-12">
+                      <div class="form-group bmd-form-group">
+                        <label class="bmd-label-static">Other information</label>
+                        <!-- <input type="text" class="form-control" formControlName="disabilityInfo"> -->
+                        <div class="form-group">
+                            <textarea class="form-control" rows="4" formControlName="disabilityInfo"></textarea>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="!studentUID">
+                    <div class="col-md-12">
+                      <div class="form-group bmd-form-group">
+                        <select class="form-control"  formControlName="courseReference">
+                          <option disabled="true" value="null"> -- Please indicate where you heard about our courses? -- </option>
+                          <option *ngFor="let courseRef of courseReferences" value="{{courseRef.id}}">{{courseRef.value}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="!studentUID">
+                    <div class="col-md-12">
+                      <div class="form-group bmd-form-group pt-3">
+                        <div class="row pl-3">  
+                          <div class="col-md-12 form-check ">
+                            <span class="mb-2 mr-3 text-primary">I understand I am required to submit two written references with my application form or bring two written references to interview.</span>
+                            <label class="form-check-label mb-3">
+                              <input class="form-check-input" type="checkbox" value="1" (change)="showRef($event.target.checked)" [checked]="getFirstWrittenReferenceName.value || getSecondWrittenReferenceName.value || getFirstWrittenReferenceNumber.value || getSecondWrittenReferenceNumber.value">
+                              <span class="form-check-sign">
+                                <span class="check"></span>
+                              </span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div><hr *ngIf="!studentUID" />
+
+                  <div *ngIf="!studentUID && (showRefFlag || getFirstWrittenReferenceName.value || getSecondWrittenReferenceName.value || getFirstWrittenReferenceNumber.value || getSecondWrittenReferenceNumber.value)">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <label class="bmd-label-static text-primary text-capitalize">Names and address of two people who will give you a written reference (e.g. school principal, teacher, guidance counsellor, employer, etc.).</label>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group bmd-form-group">
+                          <label class="bmd-label-static">Name 1</label>
+                          <input type="text" class="form-control" formControlName="firstWrittenReferenceName">
+                        </div>
+
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group bmd-form-group">
+                          <label class="bmd-label-static">Name 2</label>
+                          <input type="text" class="form-control" formControlName="secondWrittenReferenceName">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group bmd-form-group">
+                          <label class="bmd-label-static">Tel 1</label>
+                          <input type="text" class="form-control" formControlName="firstWrittenReferenceNumber">
+                        </div>
+                        <span class="text-danger" *ngIf="getFirstWrittenReferenceNumber.invalid && showError">Please Enter Valid Contact Number</span>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group bmd-form-group">
+                          <label class="bmd-label-static">Tel 2</label>
+                          <input type="text" class="form-control" formControlName="secondWrittenReferenceNumber">
+                        </div>
+                        <span class="text-danger" *ngIf="getSecondWrittenReferenceNumber.invalid && showError">Please Enter Valid Contact Number</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="!studentUID">
+                    <div class="col-md-12 text-center">
+                      <label class="bmd-label-static text-primary text-uppercase"> *** PLEASE USE BLOCK CAPITALS ***</label>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="!studentUID">
+                    <div class="col-md-12">
+                      <div class="form-group bmd-form-group pt-3 pr-2">
+                        <div class="row pl-3">  
+                          <div class="col-md-12 form-check ">
+                            <h3>
+                              <span class="mb-2 mr-3 text-capitalize text-primary">I understand that I am required to bring two written references to my interview <b class="text-danger">*</b></span>
+                              <label class="form-check-label mb-3">
+                                <input class="form-check-input" type="checkbox" formControlName="writtenReferenceStatus" (change) = "saveWrittenReferenceStatus()" [checked]="getWrittenReferenceStatus.value == 1">
+                                <span class="form-check-sign">
+                                  <span class="check"></span>
+                                </span>
+                              </label>
+                              <br/>
+                              <span class="text-danger" *ngIf="getWrittenReferenceStatus.invalid && showError">* Please Confirm written reference</span>
+                            </h3>
+                            <h3>
+                              <span class="mb-2 mr-3 text-capitalize text-primary">I understand that my application to attend a CDETB Further Education college, course or programme will require processing of my personal data in accordance with the CDETB Data Protection policy <b class="text-danger">*</b></span>
+                              <label class="form-check-label mb-3">
+                                <input class="form-check-input" type="checkbox" formControlName="cdetbConfirmation" (change) = "saveCDETBStatus()">
+                                <span class="form-check-sign">
+                                  <span class="check"></span>
+                                </span>
+                              </label>
+                              <br/>
+                              <span class="text-danger" *ngIf="getCDETbConfirmation.invalid && showError">* Please Confirm written reference</span>
+                            </h3>
+                            <h3>
+                              <span class="mb-2 mr-3 text-capitalize text-primary">If you would like Liberties College to inform you of other CDETB courses that may be of interest, please tick this box.</span>
+                              <label class="form-check-label mb-3">
+                                <input class="form-check-input" type="checkbox" formControlName="subscriberStatus" (change) = "saveSubStatus()">
+                                <span class="form-check-sign">
+                                  <span class="check"></span>
+                                </span>
+                              </label>
+                            </h3>
+                            <h3>
+                              <span class="mb-2 mr-3 text-capitalize text-primary">I declare that the information given here is true and accurate <b class="text-danger">*</b></span>
+                              <label class="form-check-label mb-3">
+                                <input class="form-check-input" type="checkbox" (change)="saveSignature()" formControlName="signature" required>
+                                <span class="form-check-sign">
+                                  <span class="check"></span>
+                                </span>
+                              </label>
+                            </h3>
+                          </div>
+                          <span class="text-danger" *ngIf="getSignature.invalid && showError">Please Confirrm that above information is true and accurate</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn pull-right" [ngClass]="{'btn-success' : newStudent.valid && getSignature.value, 'btn-primary disabled' : newStudent.invalid 
+                    || submited || !getSignature.value}"  (click)="saveStudent()">Submit</button>
+                  
+						      <div class="clearfix"></div>
+						    </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

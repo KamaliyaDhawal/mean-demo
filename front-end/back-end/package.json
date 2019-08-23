@@ -1,0 +1,41 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.5.2",
+    "body-parser": "^1.18.3",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
+    "cryptr": "^4.0.0",
+    "dotenv": "^6.1.0",
+    "express": "^4.16.4",
+    "express-mysql-session": "^2.0.1",
+    "express-session": "^1.15.6",
+    "handlebars": "^4.0.12",
+    "jsonwebtoken": "^8.3.0",
+    "later": "^1.2.0",
+    "logger": "0.0.1",
+    "mysql": "^2.16.0",
+    "mysql-backup": "^1.0.0",
+    "mysqldump": "^2.2.1",
+    "nexmo": "^2.4.0",
+    "node-cron": "^2.0.3",
+    "node-excel-export": "^1.4.4",
+    "nodemailer": "^4.6.8",
+    "passport-jwt": "^4.0.0",
+    "pdfkit": "^0.8.3",
+    "plivo": "^4.0.3",
+    "pm2": "^3.4.0",
+    "request": "^2.88.0",
+    "xmljson": "^0.2.0"
+  }
+}

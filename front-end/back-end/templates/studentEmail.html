@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<h3>Course: {{courses}}</h3>
+
+	<div>
+		<p>Dear {{username}}</p>
+		<p>Thank you for your application to the above course.  Please take note of the interview date and time.</p>
+		<table border="1" style="text-align: center; padding: 3px;">
+			<tr>
+				<td>Course Name</td>
+				<td>Interview Date</td>
+				<td>Interview Time</td>
+			</tr>
+			{{#coursesData}}
+			<tr>
+				<td>{{name}}</td>
+				<td>{{date}}</td>
+				<td>{{time}}</td>
+			</tr>
+			{{/coursesData}}
+		</table>
+
+		<a href="https://goo.gl/maps/RxZbQXckuJR2">
+			<p>Interviews will be held in <b><u>Liberties College, Bull Alley Street, Dublin 8</u></b></p>
+		</a>
+		<p>
+			<i>(The College is opposite St. Patrick’s Cathedral and down the hill from Christchurch Cathedral)</i><br>
+			You will be interviewed by two tutors who teach on the course and your interview will take approximately fifteen minutes.<br>
+			You will receive written notification of the outcome of your interview within two weeks of your interview.
+		</p>
+<p><b><u>Please Note:</u></b></p>
+<pre>
+
+	1. You must bring two written references to the interview.
+	2. Candidates <b>who have completed</b> the Leaving Certificate (or equivalent) should bring a copy of their results to interview. 
+	3. If you are unable to attend for interview please contact the Admissions Office at 01 4540044.
+		 
+	<b>** <i>Applicants may be asked to complete a short written</i> <u>Interview Preparation Test</u> <i>before attending interview. Please arrive at least 15mins before interview to complete Interview Preparation.</i></b>
+		 
+	<b>We look forward to meeting you on scheduled time</b>
+
+</pre>
+		<p>
+			Yours sincerely,
+ 			<br><br>
+			Admissions Office <br>
+			Gemma Woods <br>
+			Liberties College <br>
+		</p>
+		<img src="cid:library@logo" height="50px">
+	</div>
+</body>
+</html>

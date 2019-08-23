@@ -1,0 +1,155 @@
+<div class="content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-body">
+        <div class="row" *ngIf="countData">
+          <div class="col-sm-12">
+            <div class="card card-stats">
+              <div class="card-header card-header-icon" [ngClass]="{'card-header-danger':countData.assignSlotPer>90, 'card-header-warning':countData.assignSlotPer<90 && countData.assignSlotPer>=70, 'card-header-success':countData.assignSlotPer<70}">
+                <div class="card-icon">
+                  <circle-progress
+                    [percent]="countData.assignSlotPer"
+                    [radius]="30"
+                    [titleFontSize]="25"
+                    [outerStrokeColor]="transparent"
+                    [outerStrokeWidth]="5"
+                    [showInnerStroke]="false"
+                    [animation]="true"
+                    [animationDuration]="2000"
+                    [showSubtitle]="false"
+                  ></circle-progress>
+                </div>
+                <p class="card-category" [ngClass]="{'text-danger':countData.assignSlotPer>90, 'text-warning':countData.assignSlotPer<90 && countData.assignSlotPer>=70, 'text-success':countData.assignSlotPer<70} ">Date: {{currentRoundData.schedule_dt | date:'dd-M-yyyy'}}</p>
+                <h3 class="card-title" [ngClass]="{'text-danger':countData.assignSlotPer>90, 'text-warning':countData.assignSlotPer<90 && countData.assignSlotPer>=70, 'text-success':countData.assignSlotPer<70} "><small>Slots Summary</small></h3>
+                <h3 class="card-title" [ngClass]="{'text-danger':countData.assignSlotPer>90, 'text-warning':countData.assignSlotPer<90 && countData.assignSlotPer>=70, 'text-success':countData.assignSlotPer<70} ">{{countData.assignedCount}}/{{countData.totalCount}}
+                </h3>
+              </div>
+              <div class="card-footer">
+                <div class="stats">
+                  <h3 class="card-title" [ngClass]="{'text-danger':countData.assignSlotPer>90, 'text-warning':countData.assignSlotPer<90 && countData.assignSlotPer>=70, 'text-success':countData.assignSlotPer<70} ">
+                    <i class="material-icons mb-1">date_range</i>
+                    Available Slots: {{countData.totalCount - countData.assignedCount}}
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group bmd-form-group">
+              <label class="bmd-label-static">Round Name</label>
+              <input type="text" class="form-control" value="{{currentRoundData.name}}" disabled>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group bmd-form-group">
+              <div class="form-group bmd-form-group">
+                <label class="bmd-label-static">Courses</label>
+                <select class="form-control"  (change)="chnageSlots(currentRoundData.id, $event.target.value)" id="getCourse">
+                  <option *ngFor="let course of coursesData" value="{{course.id}}" title="{{course.name}}">{{course.name}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <h4><span>Course <b class="text-primary">{{courseName}}</b>'s Slot List</span></h4>
+            	<div class="">
+                <form [formGroup]="newSlot" (ngSubmit)="saveSlot()">
+                  <div class="row" *ngIf="changeCount" class="form-inline">
+                    <div class="col-md-3">
+                      <div class="form-group bmd-form-group">
+                        <div class="form-group bmd-form-group">
+                          <label class="bmd-label-static">Slot Time</label>
+                          <input type="text" class="form-control" formControlName="time" disabled>
+                          <div *ngIf="getCount.invalid && getCount.touched">
+                            <small class="text-danger" *ngIf="getCount.errors?.required">Please Enter Count</small>
+                            <small class="text-danger" *ngIf="getCount.errors?.pattern">Please Enter Positive Value </small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group bmd-form-group">
+                        <div class="form-group bmd-form-group">
+                          <label class="bmd-label-static">Counts</label>
+                          <input type="number" class="form-control" formControlName="count" id='count' placeholder="">
+                          <div *ngIf="getCount.invalid && getCount.touched">
+                            <small class="text-danger" *ngIf="getCount.errors?.required">Please Enter Count</small>
+                            <small class="text-danger" *ngIf="getCount.errors?.pattern">Please Enter Positive Value </small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4 mt-4">
+                      <div class="form-group">
+                        <div class="form-check">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" formControlName="applyForAll">
+                            <span class="form-check-sign">
+                              <span class="check"></span>
+                            </span>
+                            Apply Changes To All Slots Of Current Round.
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-1 mt-3">
+                      <div class="form-group">
+                        <button type="submit" [disabled]="newSlot.invalid || saved" class="btn btn-primary pull-right">Save</button>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="clearfix"></div>
+                </form>
+                <div class="clearfix"></div>
+                <div *ngIf="slots?.length; then slotBlock; else noSlotBlock;">
+                </div>
+                  <ng-template #slotBlock>
+                    <div class="deatail-table">
+                      <table class="table" [mfData]="slots" #mf="mfDataTable" [mfRowsOnPage]="5">
+                        <thead class=" text-primary">
+                          <tr>
+                            <td colspan="4">
+                              <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>ID</th>
+                            <th><mfDefaultSorter by="start_time">Start Time</mfDefaultSorter></th>
+                            <th><mfDefaultSorter by="end_time">End Time</mfDefaultSorter></th>
+                            <th class="td-actions text-right"><mfDefaultSorter by="count">Count</mfDefaultSorter></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr  *ngFor="let slot of mf.data; index as i">
+                            <td>{{i+1}}
+                            </td>
+                            <td>{{slot.start_time}}</td>
+                            <td>{{slot.end_time}}</td>
+                            <td class="td-actions text-right">{{slot.count}}
+                            	<button type="button" rel="tooltip" title="Edit Slot-{{i+1}}" class="btn btn-primary btn-link btn-sm">
+                                <i class="material-icons" (click)="editCount(slot)">edit</i>
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </ng-template>
+                  <ng-template #noSlotBlock *ngIf="getRound.valid">
+                    No Slot Added For This Round.
+                  </ng-template>
+              </div>
+            <h4><button class="btn btn-primary" routerLink="/round"><i class="material-icons">keyboard_backspace</i> Back To Round</button></h4>
+          </div>
+            <hr/>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

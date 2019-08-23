@@ -1,0 +1,121 @@
+<div class="row">
+  <div class="col-lg-6 col-md-6 col-sm-12">
+    <div class="card card-stats">
+      <div class="card-header card-header-success card-header-icon">
+        <div class="card-icon h4">
+          Selection 1
+        </div>
+        <p class="card-category text-success">Total Student</p>
+        <h3 class="card-title text-success">
+          <small>{{s1StudentsTotal}}</small>
+        </h3>
+      </div>
+      <div class="card-footer text-success">
+        <div [formGroup]="selection1Data">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group bmd-form-group">
+                <label class="bmd-label-static">Rounds</label>
+                <select class="form-control text-center" formCountrolName="round" (change)="changeRound($event.target.value, 'S1')">
+                  <option value="*" title="all">All</option>
+                  <option *ngFor="let round of rounds" value="{{round.id}}" title="{{round.name}}">{{round.name}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group bmd-form-group">
+                <label class="bmd-label-static">Courses</label>
+                <select class="form-control" formCountrolName="course" (change)="changeCourse($event.target.value, 'S1')">
+                  <option value="*" title="all">All</option>
+                  <option *ngFor="let course of s1Courses" value="{{course.id}}">{{course.name}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <table class="table-responsive mt-4">
+          <tr>
+            <th>No Shows/Applied</th>
+            <th>Offered</th>
+            <th>Awaiting Refs</th>
+            <th>Accepted</th>
+          </tr>
+          <tr>
+            <td>{{s1Applied}}</td>
+            <td>{{s1Offered}}</td>
+            <td>{{s1Awaiting}}</td>
+            <td>{{s1Accepted}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6 col-md-6 col-sm-12">
+    <div class="card card-stats">
+      <div class="card-header card-header-info card-header-icon">
+        <div class="card-icon h4">
+          Selection 2
+        </div>
+        <p class="card-category text-info">Total Student</p>
+        <h3 class="card-title text-info">
+          <small>{{s2StudentsTotal}}</small>
+        </h3>
+      </div>
+      <div class="card-footer text-info">
+        <div [formGroup]="selection2Data">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group bmd-form-group">
+                <label class="bmd-label-static">Rounds</label>
+                <select class="form-control text-center" formCountrolName="round" (change)="changeRound($event.target.value, 'S2')">
+                  <option value="*" title="all">All</option>
+                  <option *ngFor="let round of rounds" value="{{round.id}}" title="{{round.name}}">{{round.name}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group bmd-form-group">
+                <label class="bmd-label-static">Courses</label>
+                <select class="form-control" formCountrolName="course" (change)="changeCourse($event.target.value, 'S2')">
+                  <option value="*" title="all">All</option>
+                  <option *ngFor="let course of s2Courses" value="{{course.id}}">{{course.name}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <table class="table-responsive mt-4 p-5">
+          <tr>
+            <th>No Shows/Applied</th>
+            <th>Offered</th>
+            <th>Awaiting Refs</th>
+            <th>Accepted</th>
+          </tr>
+          <tr>
+            <td>{{s2Applied}}</td>
+            <td>{{s2Offered}}</td>
+            <td>{{s2Awaiting}}</td>
+            <td>{{s2Accepted}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mx-auto" *ngIf="showChart">
+  <div class="col-sm-2"></div>
+  <div class="col-sm-8">
+    <canvas baseChart 
+      [datasets]="barChartData"
+      [labels]="barChartLabels"
+      [options]="barChartOptions"
+      [plugins]="barChartPlugins"
+      [legend]="barChartLegend"
+      [chartType]="barChartType"
+      [colors]="barChartColors">
+    </canvas>
+  </div>
+</div>
